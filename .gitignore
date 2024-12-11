@@ -1,5 +1,3 @@
-SDL2/*
-
 # Prerequisites
 *.d
 
@@ -13,9 +11,9 @@ SDL2/*
 *.pch
 
 # Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# *.so
+# *.dylib
+# *.dll
 
 # Fortran module files
 *.mod
@@ -24,7 +22,7 @@ SDL2/*
 # Compiled Static libraries
 *.lai
 *.la
-*.a
+# *.a
 *.lib
 
 # Executables
