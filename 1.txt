@@ -1,0 +1,47 @@
+kd-tree
+Render time: 721847 ms
+Total number of triangles                    : 15859
+Total number of primary rays                 : 12500000
+Total number of ray-triangles tests          : 2443056802
+Total number of ray-triangles intersections  : 2956912069
+Total number of ray-kdtree node tests        : 550961911
+Total number of ray-kdtree node intersections: 524494278
+Total number of kdtree nodes                 : 207
+Total number of kdtree leaf nodes            : 104
+Total number of ray-kdtree leaf tests        : 150551962
+Total number of ray-kdtree leaf intersections: 43143135
+Samples per pixel                            : 50
+Maximum ray depth                            : 5
+Image Dimensions                             : 500x500
+
+sah
+Render time                                 :72.9147 (sec)
+Total number of triangles                   :15858
+Total number of primary rays                :12500000
+Total number of ray-triangles tests         :46196754
+Total number of ray-triangles intersections :7287974
+Total number of BVH ray-aabb tests          :461772089
+Total number of BVH ray-aabb intersections  :461772089
+Total number of BVH ray-leaf tests          :48580051
+Total number of BVH ray-leaf intersections  :48580051
+Total number of BVH nodes                   :31717
+Total number of BVH leaf nodes              :15859
+Samples per pixel                           :50
+Maxium ray depth                            :5
+Image Dimensions                            :500x500
+
+median
+Render time                                 :222.581 (sec)
+Total number of triangles                   :15858
+Total number of primary rays                :12500000
+Total number of ray-triangles tests         :51323043
+Total number of ray-triangles intersections :8704696
+Total number of BVH ray-aabb tests          :1022921733
+Total number of BVH ray-aabb intersections  :1022921733
+Total number of BVH ray-leaf tests          :53891362
+Total number of BVH ray-leaf intersections  :53891362
+Total number of BVH nodes                   :31717
+Total number of BVH leaf nodes              :15859
+Samples per pixel                           :50
+Maxium ray depth                            :5
+Image Dimensions                            :500x500
