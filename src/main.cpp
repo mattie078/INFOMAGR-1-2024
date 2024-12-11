@@ -31,7 +31,7 @@ int main(int argc, char **argv)
     const int depth = 5;
 
     // ObjParser obj_parser = ObjParser("../demo_data/dragon_10k.obj");
-    ObjParser obj_parser = ObjParser("../demo_data/dragon_10k_scaled.obj");
+    ObjParser obj_parser = ObjParser("../demo_data/combination_scaled.obj");
     vector<Triangle *> objects;
 
     Material mat;
