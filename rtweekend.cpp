@@ -1,3 +1,5 @@
+#define SDL_MAIN_HANDLED
+
 #include "rtweekend.h"
 
 #include "color.h"
@@ -37,10 +39,10 @@ color ray_color(const ray& r, color& background, const hittable& world, int dept
 		return rec.num_bvh_node_intersects * vec3(1,1,1);
 		#endif
 
-		// // background gradient
-		// vec3 unit_direction = unit_vector(r.direction());
-		// auto t = 0.5*(unit_direction.y() + 1.0);
-		// return (1.0-t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0); // blue sky
+		// background gradient
+		vec3 unit_direction = unit_vector(r.direction());
+		auto t = 0.5 * (unit_direction.y() + 1.0);
+		return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0); // blue sky
 		// //return (1.0-t) * color(0.2, 0.2, 0.2) + t * color(0.0, 0.0, 0.3); // night sky
 
 		return background;
@@ -112,19 +114,22 @@ hittable_list load_obj(std::string filename, double scale, point3 pos, shared_pt
 
 			faces.push_back(face);
 
+			// BUG: this hits when there are 3 vertices in the face as well
+
 			// if their is a fourth vertex make a second triangle
-			in >> vert_idx_slash;
-			if (vert_idx_slash.size() > 1) {
+			// in >> vert_idx_slash;
+			// if (vert_idx_slash.size() > 1)
+			// {
 
-				// get only the number before the first slash
-				std::string vertex_index = vert_idx_slash.substr(0, vert_idx_slash.find(delimiter_slash));
+			// 	// get only the number before the first slash
+			// 	std::string vertex_index = vert_idx_slash.substr(0, vert_idx_slash.find(delimiter_slash));
 
-				std::vector<int> face2;
-				face2.push_back(face[0]);
-				face2.push_back(face[2]);
-				face2.push_back(std::stoi(vertex_index) - 1);
-				faces.push_back(face2);
-			}
+			// 	std::vector<int> face2;
+			// 	face2.push_back(face[0]);
+			// 	face2.push_back(face[2]);
+			// 	face2.push_back(std::stoi(vertex_index) - 1);
+			// 	faces.push_back(face2);
+			// }
 		}
     }
 
@@ -135,8 +140,8 @@ hittable_list load_obj(std::string filename, double scale, point3 pos, shared_pt
 		point3 v0 = verts[face[0]];
 		point3 v1 = verts[face[1]];
 		point3 v2 = verts[face[2]];
-		triangles.add(make_shared<triangle>( v0, v1, v2, m ));
-		num_triangles += 1;
+		triangles.add(make_shared<triangle>(v0, v1, v2, m));
+		D(num_triangles++);
 	}
 
 	return triangles;
@@ -342,24 +347,53 @@ void create_scene_blob(std::unique_ptr<hittable>& pWorld, camera& cam, size_t& i
     pWorld = std::make_unique<bvh_node>(objects);
 }
 
+void create_scene_dragon(std::unique_ptr<hittable> &pWorld, camera &cam, size_t &image_width, size_t &image_height)
+{
+	image_width = 500;
+	image_height = 500;
 
-int main() {
-	const int samples_per_pixel = 16*32;
-	const int max_depth = 10;
+	cam.aspect_ratio(1);
+	cam.lookfrom(point3(0, -125, 0));
+	cam.lookat(point3(0, 0, 0));
+	cam.vfov(40);
+
+	hittable_list objects;
+
+	auto material_dragon = make_shared<lambertian>(color(1, 1, 1));
+	objects.add(load_obj("obj_files/dragon_10k_scaled.obj", 0.3, point3(0, 0, 0), material_dragon));
+
+	// add light
+	objects.add(make_shared<sphere>(point3(150, 0, 1), 90, make_shared<diffuse_light>(color(2, 0, 0))));
+
+	// auto ground_material = make_shared<lambertian>(color(1, 1, 0.2));
+	// objects.add(make_shared<sphere>(point3(0, -1000, 0), 1000, ground_material));
+
+	pWorld = std::make_unique<bvh_node>(objects);
+}
+
+int main()
+{
+	const int samples_per_pixel = 50;
+	const int max_depth = 5;
 
 	// default values
-    color background(0,0,0);
+	color background(0, 0, 0);
     size_t image_width = 300;
     size_t image_height = 200;
     camera cam(
-    	point3(1,1,1),                    // look from
-    	point3(0,0,0),                    // lookat
-    	vec3(0,1,0),                      // vup 
-    	50,                               // vfov
+		point3(1, 1, 1),				  // look from
+		point3(0, 0, 0),				  // lookat
+		vec3(0, 0, 1),					  // vup
+		50,								  // vfov
     	(float)image_width / image_height // aspect_ratio
     );
     std::unique_ptr<hittable> pWorld;
-	create_scene_balls(pWorld, cam, image_width, image_height);
+
+	create_scene_dragon(pWorld, cam, image_width, image_height);
+
+	// create_scene_bunny(pWorld, cam, image_width, image_height);
+
+	// create_scene_blob(pWorld, cam, image_width, image_height);
 
 	// SDL stuff
     SDL_Init(SDL_INIT_VIDEO); // initialize SDL

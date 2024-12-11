@@ -1,21 +1,19 @@
 CC = g++
-PROGRAM_NAME = rtweekend
+PROGRAM_NAME = rtweekend.exe
 SOURCES = $(wildcard *.cpp)
 OBJS = $(SOURCES:.cpp=.o)
 DEPS = 
-CPPFLAGS = -Wall -Wextra -fopenmp -Wno-unused-parameter -lSDL2
+CPPFLAGS = -Wall -Wextra -fopenmp -Wno-unused-parameter -I./SDL2/include -L./SDL2/lib -lSDL2
 
-.PHONY: all clean distclean
+.PHONY: all clean distclean run valgrind
 
-all: $(PROGRAM_NAME)
+all: clean $(PROGRAM_NAME)
 
 %.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CPPFLAGS)
 
 $(PROGRAM_NAME): $(OBJS)
 	$(CC) $^ $(CPPFLAGS) -o $(PROGRAM_NAME)
-
-#$(SOURCES:.c=.o): $(HEADERS)
 
 run: $(PROGRAM_NAME)
 	./$(PROGRAM_NAME)
@@ -24,7 +22,7 @@ valgrind: $(PROGRAM_NAME)
 	valgrind --suppressions=valgrind-suppressions.supp --leak-check=yes ./$(PROGRAM_NAME)
 
 clean:
-	rm -f $(PROGRAM_NAME)
-	rm -f *.o
+	del $(PROGRAM_NAME)
+	del *.o
 
 distclean: clean

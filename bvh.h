@@ -5,7 +5,7 @@
 #define BVH_RECURSIVE_FAST
 //#define BVH_RECURSIVE_SLOW
 #define BVH_SPLIT_SAH
-//#define BVH_SPLIT_MEDIAN
+// #define BVH_SPLIT_MEDIAN
 
 #include <algorithm>
 #include <cstring>
@@ -157,9 +157,10 @@ bvh_node::bvh_node(std::vector<shared_ptr<hittable>>& objects, size_t start, siz
     float split_pos;
     const auto sah = pick_best_split(split_axis, split_pos, objects, box, start, end);
 
-    if (sah >= object_span){
-        std::cout << "sah: fix this! -----------------------------\n";
-    }
+	// We do +1 here to avoid degenerated node that has nothing in it, this does not affect the result.
+	if (sah >= object_span + 1) {
+		std::cout << "bvh error: fix this! -----------------------------\n";
+	}
 
     // partition the data
     auto compare = [split_pos, split_axis](const shared_ptr<hittable> pri) {
