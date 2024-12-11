@@ -378,7 +378,7 @@ void create_scene_dragon(std::unique_ptr<hittable> &pWorld, camera &cam, size_t 
 	hittable_list objects;
 
 	auto material_dragon = make_shared<lambertian>(color(1, 1, 1));
-	objects.add(load_obj("obj_files/dragon_10k_scaled.obj", 0.3, point3(0, 0, 0), material_dragon));
+	objects.add(load_obj("obj_files/combination_scaled.obj", 0.3, point3(0, 0, 0), material_dragon));
 
 	// add light
 	objects.add(make_shared<sphere>(point3(150, 0, 1), 90, make_shared<diffuse_light>(color(2, 0, 0))));
