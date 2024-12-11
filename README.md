@@ -19,3 +19,7 @@ Notably, the following changes were made:
 - Added a 10k triangle model of the Stanford Dragon
 - Changed the Camera properties to be in line with kd-tree branch (ex: the up vector is using a different axis for Blender models)
 - Fixed a bug in the .obj loader that caused the model to be imported twice
+
+## Debug mode
+
+If you want to run the program in debug mode, you can uncomment rtweekend.h:11 and recompile the program. This will make it slower but it will print out the results of the rendering process at the end.

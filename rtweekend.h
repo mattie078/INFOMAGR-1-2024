@@ -8,7 +8,7 @@
 #include <atomic>
 
 //#define BVH_HEATMAP
-#define DEBUG
+// #define DEBUG
 #ifdef DEBUG 
 #define D(x) (x)
 #else 
