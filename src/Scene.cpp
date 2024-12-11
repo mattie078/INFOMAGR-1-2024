@@ -136,7 +136,11 @@ void Scene::render(Image *image, vector<cv::Vec3f> &vertexes, int samples, int d
     int width = image->getWidth();
     int height = image->getHeight();
     cv::Vec3f normal = unit_vec(camera->view_plane_point_c - camera->origin_c);
-    cv::Vec3f up(0, 0, 1);
+    cv::Vec3f up = unit_vec(cv::Vec3f(0, 0, 1).cross(normal));
+    if (cv::norm(up) == 0)
+    {
+        up = cv::Vec3f(0, 1, 0); // Fall back if viewing direction aligns with Z-axis
+    }
 
     // Add vof like BVH branch
     float aspect_ratio = static_cast<float>(width) / static_cast<float>(height);
