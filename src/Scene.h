@@ -15,9 +15,9 @@ class Scene {
 public:
     KDTree *kd_tree{};
 
-    Color rayTracing(Ray ray, vector<cv::Vec3f> &vertexes);
+    Color rayTracing(Ray ray, vector<cv::Vec3f> &vertexes, int depth);
 
-    void render(Image *image, vector<cv::Vec3f> &vertexes);
+    void render(Image *image, vector<cv::Vec3f> &vertexes, int samples, int depth);
 
     Camera *camera{};
 

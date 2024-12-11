@@ -17,7 +17,7 @@ class ObjParser {
 public:
     explicit ObjParser(const char *obj_file_name);
 
-    void parseObjects(vector<Triangle *> &objects, Material mat, vector<cv::Vec3f> &vertexes);
+    void parseObjects(vector<Triangle *> &objects, Material mat, vector<cv::Vec3f> &vertexes, double scale);
 
 private:
     const char *obj_file_name_{};

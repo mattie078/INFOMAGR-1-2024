@@ -7,7 +7,6 @@
 
 #include <cmath>
 
-
 class Color {
 public:
     Color(float r, float g, float b)
@@ -26,6 +25,7 @@ public:
     Color operator*(float k) const;
     Color operator*(const Color& other) const;
     Color operator/(float k) const;
+    Color operator/=(float k) const;
 
 private:
     static float lu(float c);

@@ -6,14 +6,14 @@
 #define RAYTRACER_DEFAULTS_H
 
 #define KDTREE true
-#define VERBOSE false
+#define VERBOSE true
 #define MAX_LEVEL 20
 #define MIN_OBJECTS 320
 #define IDEAL_SPLIT_RAND false
 #define IDEAL_SPLIT_MID true
 #define MIN_DIST 10000000
-#define WIDTH 480
-#define HEIGHT 380
-#define INTENSITY 120
+#define WIDTH 500
+#define HEIGHT 500
+#define INTENSITY 2500
 
 #endif //RAYTRACER_DEFAULTS_H

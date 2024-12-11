@@ -4,8 +4,6 @@
 
 #include "Color.h"
 
-
-
 float Color::lu(float c) {
     // adapted from http://www.w3.org/Graphics/Color/srgb
     if (c <= 0.0031308f)
@@ -52,5 +50,9 @@ Color Color::operator+(const Color& other) const {
 }
 
 Color Color::operator / (float k) const {
+    return {r_ / k, g_ / k, b_ / k};
+}
+
+Color Color::operator/= (float k) const {
     return {r_ / k, g_ / k, b_ / k};
 }

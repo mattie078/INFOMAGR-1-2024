@@ -3,30 +3,34 @@
 //
 
 #include "Triangle.h"
+#include "globals.h"
 
 using namespace std;
 
-float vec_length(const cv::Vec3f &vector_) {
+float vec_length(const cv::Vec3f &vector_)
+{
     return sqrt(vector_.val[0] * vector_.val[0] + vector_.val[1] * vector_.val[1] + vector_.val[2] * vector_.val[2]);
 }
 
-cv::Vec3f unit_vec(const cv::Vec3f &vector_) {
+cv::Vec3f unit_vec(const cv::Vec3f &vector_)
+{
     float vector_length = vec_length(vector_);
     return {vector_.val[0] / vector_length,
             vector_.val[1] / vector_length,
             vector_.val[2] / vector_length};
 }
 
-
 /*
  * Determines if the vector is perpendicular to the triangle's plane
  */
-bool insideOutsideTest(const cv::Vec3f& t0, const cv::Vec3f& t1, const cv::Vec3f& p0, const cv::Vec3f& p1) {
+bool insideOutsideTest(const cv::Vec3f &t0, const cv::Vec3f &t1, const cv::Vec3f &p0, const cv::Vec3f &p1)
+{
     return ((p1 - p0).cross(t0 - p0)).dot((p1 - p0).cross(t1 - p0)) >= 0;
 }
 
 Triangle::Triangle(const long p0, const long p1, const long p2)
-        : p0_(p0), p1_(p1), p2_(p2) {
+    : p0_(p0), p1_(p1), p2_(p2)
+{
 }
 
 /*
@@ -41,8 +45,9 @@ Triangle::Triangle(const long p0, const long p1, const long p2)
  * t = - (dot(N, orig) + D) / dot(N, dir);
  * P = orig + t * dir;
  */
-Intersection Triangle::intersect(Ray ray, vector<cv::Vec3f> &vertexes) {
-    total_intersections++;
+Intersection Triangle::intersect(Ray ray, vector<cv::Vec3f> &vertexes)
+{
+    D(num_ray_triangle_tests++);
 
     Intersection contact;
     contact.exists = false;
@@ -54,40 +59,44 @@ Intersection Triangle::intersect(Ray ray, vector<cv::Vec3f> &vertexes) {
     float denominator = normal.dot(ray.direction_unit_v_);
     dir = -normal.dot(p0_to_ray) / denominator;
     bool not_intersect = abs(denominator) < 0.0001 or dir < 0;
-    if (not_intersect) {
+    if (not_intersect)
+    {
         return contact;
     }
     contact.contact_c_ = ray.origin_c_ + ray.direction_unit_v_ * dir;
     cv::Vec3f w = contact.contact_c_ - vertexes[p0_];
-    bool is_inside = insideOutsideTest(w, u, v, cv::Vec3f(0, 0, 0))
-                     && insideOutsideTest(w, cv::Vec3f(0, 0, 0), u, v)
-                     && insideOutsideTest(w, v, cv::Vec3f(0, 0, 0), u);
-    if (is_inside) {
+    bool is_inside = insideOutsideTest(w, u, v, cv::Vec3f(0, 0, 0)) && insideOutsideTest(w, cv::Vec3f(0, 0, 0), u, v) && insideOutsideTest(w, v, cv::Vec3f(0, 0, 0), u);
+    if (is_inside)
+    {
         contact.exists = true;
         contact.normal_unit_v_ = unit_vec(normal);
     }
 
+    D(num_ray_triangle_intersections++);
     return contact;
 }
 
-
-void Triangle::setMaterial(Material mat) {
+void Triangle::setMaterial(Material mat)
+{
     material_ = mat;
 }
 
-const cv::Vec3f &Triangle::getP0(vector<cv::Vec3f> &vertexes) const {
+const cv::Vec3f &Triangle::getP0(vector<cv::Vec3f> &vertexes) const
+{
     return vertexes[p0_];
 }
 
-const cv::Vec3f &Triangle::getP1(vector<cv::Vec3f> &vertexes) const {
+const cv::Vec3f &Triangle::getP1(vector<cv::Vec3f> &vertexes) const
+{
     return vertexes[p1_];
 }
 
-const cv::Vec3f &Triangle::getP2(vector<cv::Vec3f> &vertexes) const {
+const cv::Vec3f &Triangle::getP2(vector<cv::Vec3f> &vertexes) const
+{
     return vertexes[p2_];
 }
 
-float max(float n1, float n2) {
+float max(float n1, float n2)
+{
     return n1 < n2 ? n2 : n1;
 }
-
